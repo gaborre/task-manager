@@ -21,6 +21,10 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
+	//swagger
+	implementation("org.springdoc:springdoc-openapi-webflux-core:1.6.7")
+	implementation("org.springdoc:springdoc-openapi-webflux-ui:1.6.7")
+
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

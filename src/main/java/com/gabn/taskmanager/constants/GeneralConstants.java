@@ -1,0 +1,6 @@
+package com.gabn.taskmanager.constants;
+
+public class GeneralConstants {
+    public static final String QUERY_KEY = "query";
+    public static final String UPDATE_KEY = "update";
+}

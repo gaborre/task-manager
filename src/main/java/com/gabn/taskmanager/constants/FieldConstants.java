@@ -7,6 +7,7 @@ public final class FieldConstants {
     public static final String LAST_NAME = "lastName";
     public static final String ADDRESS = "address";
     public static final String PHONE = "phone";
+    public static final String DESCRIPTION = "description";
     public static final String CREATED_DATE = "createdDate";
     public static final String UPDATED_DATE = "updatedDate";
 }

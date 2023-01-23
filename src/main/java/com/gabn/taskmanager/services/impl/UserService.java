@@ -1,6 +1,8 @@
 package com.gabn.taskmanager.services.impl;
 
 import com.gabn.taskmanager.collections.User;
+import com.gabn.taskmanager.exceptions.EmptyNotFoundException;
+import com.gabn.taskmanager.exceptions.NotFoundException;
 import com.gabn.taskmanager.mappers.UserMapper;
 import com.gabn.taskmanager.models.UserModel;
 import com.gabn.taskmanager.repositories.UserRepository;
@@ -43,13 +45,15 @@ public class UserService implements IUserService {
     @Override
     public Flux<UserModel> findAll(UserModel userModel) {
         return reactiveMongoTemplate.find(getFindAllQuery(userModel), User.class)
-            .map(UserMapper::mapCollectionToModel);
+            .map(UserMapper::mapCollectionToModel)
+            .switchIfEmpty(Flux.error(new EmptyNotFoundException("User list is empty")));
     }
 
     @Override
     public Mono<UserModel> findById(String id) {
         return userRepository.findById(id)
-            .map(UserMapper::mapCollectionToModel);
+            .map(UserMapper::mapCollectionToModel)
+            .switchIfEmpty(Mono.error(new NotFoundException("User "+id+" not found")));
     }
 
     @Override

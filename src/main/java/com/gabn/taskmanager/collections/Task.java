@@ -15,25 +15,16 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "users")
-public class User {
+@Document(collection = "tasks")
+public class Task {
     @Id
     private String id;
-
-    @Indexed(unique = true, direction = IndexDirection.ASCENDING)
-    private String identification;
 
     @Indexed(direction = IndexDirection.ASCENDING)
     private String name;
 
     @Indexed(direction = IndexDirection.ASCENDING)
-    private String lastName;
-
-    @Indexed(direction = IndexDirection.ASCENDING)
-    private String address;
-
-    @Indexed(direction = IndexDirection.ASCENDING)
-    private String phone;
+    private String description;
 
     @Indexed(direction = IndexDirection.ASCENDING)
     private LocalDateTime createdDate;

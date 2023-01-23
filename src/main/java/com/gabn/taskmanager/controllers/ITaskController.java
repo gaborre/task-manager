@@ -116,7 +116,7 @@ public interface ITaskController {
             )
         }
     )
-    Mono<ResponseEntity<ResponseDTO>> delete(
+    Mono<ResponseEntity<ResponseDTO<Object>>> delete(
         @PathVariable(value = "id") String id
     );
 }

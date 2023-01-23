@@ -46,6 +46,13 @@ class TaskServiceTest {
     }
 
     @Test
+    void findAllWithDate() {
+        when(reactiveMongoTemplate.find(any(Query.class), any()))
+            .thenReturn(Flux.fromIterable(TaskMock.getTaskList()));
+        assertAll(() -> taskService.findAll(TaskMock.getTaskModelWithDate()));
+    }
+
+    @Test
     void findById() {
         String id = "1";
         when(taskRepository.findById(anyString()))

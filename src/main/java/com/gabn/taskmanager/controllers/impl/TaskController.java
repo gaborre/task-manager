@@ -118,12 +118,13 @@ public class TaskController implements ITaskController {
     @DeleteMapping(
         path = "/{id}"
     )
-    public Mono<ResponseEntity<ResponseDTO>> delete(
+    public Mono<ResponseEntity<ResponseDTO<Object>>> delete(
         String id
     ) {
         return taskService.delete(id)
-            .map(response -> ResponseEntity.ok()
-                .body(buildResponseDTO(HttpStatus.OK, null))
+            .thenReturn(
+                ResponseEntity.ok()
+                    .body(buildResponseDTO(HttpStatus.OK, id))
             );
     }
 }

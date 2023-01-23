@@ -47,6 +47,19 @@ public final class UserMock {
             .build();
     }
 
+    public static UserModel getUserModelWithDate() {
+        return UserModel.builder()
+            .id("1")
+            .identification("1111111")
+            .name("Fulano")
+            .lastName("De tal")
+            .address("Carrera 5 #5-55")
+            .phone("3005554433")
+            .createdDate(LocalDateTime.now(ZoneOffset.UTC))
+            .updatedDate(LocalDateTime.now(ZoneOffset.UTC))
+            .build();
+    }
+
     public static List<User> getUserList() {
         return List.of(
             getUser()

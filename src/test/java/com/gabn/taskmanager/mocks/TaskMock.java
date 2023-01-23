@@ -38,6 +38,16 @@ public final class TaskMock {
             .build();
     }
 
+    public static TaskModel getTaskModelWithDate() {
+        return TaskModel.builder()
+            .id("1")
+            .name("Fulano")
+            .description("Description")
+            .createdDate(LocalDateTime.now(ZoneOffset.UTC))
+            .updatedDate(LocalDateTime.now(ZoneOffset.UTC))
+            .build();
+    }
+
     public static List<Task> getTaskList() {
         return List.of(
             getTask()

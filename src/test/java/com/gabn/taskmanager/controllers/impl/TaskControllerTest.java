@@ -1,14 +1,12 @@
 package com.gabn.taskmanager.controllers.impl;
 
-import com.gabn.taskmanager.dto.user.CreateUserDTO;
-import com.gabn.taskmanager.dto.user.UpdateUserDTO;
+import com.gabn.taskmanager.dto.task.CreateTaskDTO;
+import com.gabn.taskmanager.dto.task.UpdateTaskDTO;
 import com.gabn.taskmanager.exceptions.EmptyNotFoundException;
 import com.gabn.taskmanager.exceptions.NotFoundException;
 import com.gabn.taskmanager.mocks.TaskMock;
-import com.gabn.taskmanager.mocks.UserMock;
 import com.gabn.taskmanager.models.TaskModel;
-import com.gabn.taskmanager.models.UserModel;
-import com.gabn.taskmanager.services.IUserService;
+import com.gabn.taskmanager.services.ITaskService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
@@ -20,7 +18,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -28,22 +27,22 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient(timeout = "300000")
 @AutoConfigureDataMongo
-class UserControllerTest {
+class TaskControllerTest {
     @Autowired
     private WebTestClient webTestClient;
 
     @MockBean
-    private IUserService userService;
+    private ITaskService taskService;
 
     @Test
     void create() {
-        String uri = "/api/v1/users";
-        when(userService.create(any(UserModel.class)))
-            .thenReturn(Mono.just(UserMock.getUserModel()));
+        String uri = "/api/v1/tasks";
+        when(taskService.create(any(TaskModel.class)))
+            .thenReturn(Mono.just(TaskMock.getTaskModel()));
         webTestClient.post()
             .uri(uri)
             .contentType(MediaType.APPLICATION_JSON)
-            .body(Mono.just(UserMock.getCreateUserDTO()), CreateUserDTO.class)
+            .body(Mono.just(TaskMock.getCreateTaskDTO()), CreateTaskDTO.class)
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus()
@@ -52,9 +51,9 @@ class UserControllerTest {
 
     @Test
     void findAll() {
-        String uri = "/api/v1/users";
-        when(userService.findAll(any(UserModel.class)))
-            .thenReturn(Flux.fromIterable(UserMock.getUserModelList()));
+        String uri = "/api/v1/tasks";
+        when(taskService.findAll(any(TaskModel.class)))
+            .thenReturn(Flux.fromIterable(TaskMock.getTaskModelList()));
         webTestClient.get()
             .uri(uri)
             .accept(MediaType.APPLICATION_JSON)
@@ -64,10 +63,10 @@ class UserControllerTest {
     }
 
     @Test
-    void findById() {
-        String uri = "/api/v1/users/1";
-        when(userService.findById(anyString()))
-            .thenReturn(Mono.just(UserMock.getUserModel()));
+    void findById() throws NotFoundException {
+        String uri = "/api/v1/tasks/1";
+        when(taskService.findById(anyString()))
+            .thenReturn(Mono.just(TaskMock.getTaskModel()));
         webTestClient.get()
             .uri(uri)
             .accept(MediaType.APPLICATION_JSON)
@@ -78,13 +77,13 @@ class UserControllerTest {
 
     @Test
     void update() {
-        String uri = "/api/v1/users/1";
-        when(userService.update(any(UserModel.class)))
-            .thenReturn(Mono.just(UserMock.getUserModel()));
+        String uri = "/api/v1/tasks/1";
+        when(taskService.update(any(TaskModel.class)))
+            .thenReturn(Mono.just(TaskMock.getTaskModel()));
         webTestClient.put()
             .uri(uri)
             .contentType(MediaType.APPLICATION_JSON)
-            .body(Mono.just(UserMock.getUpdateUserDTO()), UpdateUserDTO.class)
+            .body(Mono.just(TaskMock.getUpdateTaskDTO()), UpdateTaskDTO.class)
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus()
@@ -93,8 +92,8 @@ class UserControllerTest {
 
     @Test
     void delete() {
-        String uri = "/api/v1/users/1";
-        when(userService.delete(anyString()))
+        String uri = "/api/v1/tasks/1";
+        when(taskService.delete(anyString()))
             .thenReturn(Mono.empty());
         webTestClient.delete()
             .uri(uri)
@@ -106,9 +105,9 @@ class UserControllerTest {
 
     @Test
     void findAllThrowsDateTimeParseException() {
-        String uri = "/api/v1/users?initDate=2023-01-23&endDate=2023-01-23";
-        when(userService.findAll(any(UserModel.class)))
-            .thenReturn(Flux.fromIterable(UserMock.getUserModelList()));
+        String uri = "/api/v1/tasks?initDate=2023-01-23&endDate=2023-01-23";
+        when(taskService.findAll(any(TaskModel.class)))
+            .thenReturn(Flux.fromIterable(TaskMock.getTaskModelList()));
         webTestClient.get()
             .uri(uri)
             .accept(MediaType.APPLICATION_JSON)
@@ -119,9 +118,9 @@ class UserControllerTest {
 
     @Test
     void findAllThrowsEmptyNotFoundException() {
-        String uri = "/api/v1/users";
-        when(userService.findAll(any(UserModel.class)))
-            .thenReturn(Flux.error(new EmptyNotFoundException("User list is empty")));
+        String uri = "/api/v1/tasks";
+        when(taskService.findAll(any(TaskModel.class)))
+            .thenReturn(Flux.error(new EmptyNotFoundException("Task list is empty")));
         webTestClient.get()
             .uri(uri)
             .accept(MediaType.APPLICATION_JSON)
@@ -132,9 +131,9 @@ class UserControllerTest {
 
     @Test
     void findAllWithDateRange() {
-        String uri = "/api/v1/users?initDate=2023-01-23T10:00:00.000Z&endDate=2023-01-23T11:00:00.000Z";
-        when(userService.findAll(any(UserModel.class)))
-            .thenReturn(Flux.fromIterable(UserMock.getUserModelList()));
+        String uri = "/api/v1/tasks?initDate=2023-01-23T10:00:00.000Z&endDate=2023-01-23T11:00:00.000Z";
+        when(taskService.findAll(any(TaskModel.class)))
+            .thenReturn(Flux.fromIterable(TaskMock.getTaskModelList()));
         webTestClient.get()
             .uri(uri)
             .accept(MediaType.APPLICATION_JSON)
@@ -145,9 +144,9 @@ class UserControllerTest {
 
     @Test
     void findByIdThrowsNotFoundException() {
-        String uri = "/api/v1/users/1";
-        when(userService.findById(anyString()))
-            .thenReturn(Mono.error(new NotFoundException("User 1 not found")));
+        String uri = "/api/v1/tasks/1";
+        when(taskService.findById(anyString()))
+            .thenReturn(Mono.error(new NotFoundException("Task 1 not found")));
         webTestClient.get()
             .uri(uri)
             .accept(MediaType.APPLICATION_JSON)

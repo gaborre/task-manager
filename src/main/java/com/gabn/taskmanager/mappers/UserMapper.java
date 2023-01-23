@@ -10,7 +10,8 @@ import com.gabn.taskmanager.models.UserModel;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import static com.gabn.taskmanager.utils.DateTimeUtils.*;
+import static com.gabn.taskmanager.utils.DateTimeUtils.getLocalDateTimeForCriteria;
+import static com.gabn.taskmanager.utils.DateTimeUtils.getStringDateFromLocalDateTime;
 
 public final class UserMapper {
 
@@ -60,18 +61,6 @@ public final class UserMapper {
             .address(userModel.getAddress())
             .phone(userModel.getPhone())
             .createdDate(LocalDateTime.now(ZoneOffset.UTC))
-            .build();
-    }
-
-    public static User mapModelToCollectionForUpdate(UserModel userModel) {
-        return User.builder()
-            .id(userModel.getId())
-            .identification(userModel.getIdentification())
-            .name(userModel.getName())
-            .lastName(userModel.getLastName())
-            .address(userModel.getAddress())
-            .phone(userModel.getPhone())
-            .updatedDate(LocalDateTime.now(ZoneOffset.UTC))
             .build();
     }
 

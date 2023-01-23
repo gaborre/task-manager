@@ -12,7 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.gabn.taskmanager.constants.FieldConstants.*;
+import static com.gabn.taskmanager.constants.FieldConstants.ADDRESS;
+import static com.gabn.taskmanager.constants.FieldConstants.CREATED_DATE;
+import static com.gabn.taskmanager.constants.FieldConstants.ID;
+import static com.gabn.taskmanager.constants.FieldConstants.IDENTIFICATION;
+import static com.gabn.taskmanager.constants.FieldConstants.LAST_NAME;
+import static com.gabn.taskmanager.constants.FieldConstants.NAME;
+import static com.gabn.taskmanager.constants.FieldConstants.PHONE;
+import static com.gabn.taskmanager.constants.FieldConstants.UPDATED_DATE;
 import static com.gabn.taskmanager.constants.GeneralConstants.QUERY_KEY;
 import static com.gabn.taskmanager.constants.GeneralConstants.UPDATE_KEY;
 import static java.util.Map.entry;
@@ -23,6 +30,9 @@ public class UserQueries {
         Query query = new Query();
         Criteria criteria = new Criteria();
         List<Criteria> criteriaList = new ArrayList<>();
+        if (Objects.nonNull(userModel.getId())) {
+            criteriaList.add(Criteria.where(ID).is(userModel.getId()));
+        }
         if (Objects.nonNull(userModel.getIdentification())) {
             criteriaList.add(Criteria.where(IDENTIFICATION).is(userModel.getIdentification()));
         }

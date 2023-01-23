@@ -1,4 +1,4 @@
-package com.gabn.taskmanager.dto.user;
+package com.gabn.taskmanager.dto.task;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,25 +16,16 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCriteriaDTO implements Serializable {
+public class TaskCriteriaDTO implements Serializable {
     @Serial
-    private static final long serialVersionUID = -5183296188701174975L;
+    private static final long serialVersionUID = -5945739180448898078L;
     private String id;
-
-    @NotEmpty
-    private String identification;
 
     @NotEmpty
     private String name;
 
     @NotEmpty
-    private String lastName;
-
-    @NotEmpty
-    private String address;
-
-    @NotEmpty
-    private String phone;
+    private String description;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private String initDate;

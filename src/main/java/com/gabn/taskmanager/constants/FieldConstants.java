@@ -1,5 +1,8 @@
 package com.gabn.taskmanager.constants;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public final class FieldConstants {
     public static final String ID = "id";
     public static final String IDENTIFICATION = "identification";

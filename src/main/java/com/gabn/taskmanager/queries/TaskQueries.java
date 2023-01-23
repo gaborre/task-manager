@@ -1,6 +1,7 @@
 package com.gabn.taskmanager.queries;
 
 import com.gabn.taskmanager.models.TaskModel;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -21,7 +22,8 @@ import static com.gabn.taskmanager.constants.GeneralConstants.QUERY_KEY;
 import static com.gabn.taskmanager.constants.GeneralConstants.UPDATE_KEY;
 import static java.util.Map.entry;
 
-public class TaskQueries {
+@NoArgsConstructor
+public final class TaskQueries {
 
     public static Query getFindAllQuery(TaskModel taskModel) {
         Query query = new Query();

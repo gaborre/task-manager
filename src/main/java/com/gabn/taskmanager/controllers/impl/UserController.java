@@ -118,12 +118,13 @@ public class UserController implements IUserController {
     @DeleteMapping(
         path = "/{id}"
     )
-    public Mono<ResponseEntity<ResponseDTO>> delete(
+    public Mono<ResponseEntity<ResponseDTO<Object>>> delete(
         String id
     ) {
         return userService.delete(id)
-            .map(response -> ResponseEntity.ok()
-                .body(buildResponseDTO(HttpStatus.OK, null))
+            .thenReturn(
+                ResponseEntity.ok()
+                    .body(buildResponseDTO(HttpStatus.OK, id))
             );
     }
 }

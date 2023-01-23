@@ -46,6 +46,13 @@ class UserServiceTest {
     }
 
     @Test
+    void findAllWithDate() {
+        when(reactiveMongoTemplate.find(any(Query.class), any()))
+            .thenReturn(Flux.fromIterable(UserMock.getUserList()));
+        assertAll(() -> userService.findAll(UserMock.getUserModelWithDate()));
+    }
+
+    @Test
     void findById() {
         String id = "1";
         when(userRepository.findById(anyString()))

@@ -6,6 +6,7 @@ import com.gabn.taskmanager.dto.task.TaskCriteriaDTO;
 import com.gabn.taskmanager.dto.task.TaskDTO;
 import com.gabn.taskmanager.dto.task.UpdateTaskDTO;
 import com.gabn.taskmanager.models.TaskModel;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -13,11 +14,8 @@ import java.time.ZoneOffset;
 import static com.gabn.taskmanager.utils.DateTimeUtils.getLocalDateTimeForCriteria;
 import static com.gabn.taskmanager.utils.DateTimeUtils.getStringDateFromLocalDateTime;
 
+@NoArgsConstructor
 public final class TaskMapper {
-
-    private TaskMapper() {
-        // UserMapper constructor
-    }
 
     public static TaskModel mapCriteriaDTOToModel(TaskCriteriaDTO taskCriteriaDTO) {
         return TaskModel.builder()

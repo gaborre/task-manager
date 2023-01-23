@@ -1,6 +1,6 @@
 package com.gabn.taskmanager.utils;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 import static java.util.Objects.requireNonNullElse;
 
-@Slf4j
+@NoArgsConstructor
 public final class DateTimeUtils {
 
     public static String getStringDateFromLocalDateTime(LocalDateTime localDateTime) {

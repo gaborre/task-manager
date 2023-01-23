@@ -11,15 +11,12 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @AllArgsConstructor
-public class UserModel implements Serializable {
+public class TaskModel implements Serializable {
     @Serial
-    private static final long serialVersionUID = 5457470511345794214L;
+    private static final long serialVersionUID = 3447451875136203517L;
     private String id;
-    private String identification;
     private String name;
-    private String lastName;
-    private String address;
-    private String phone;
+    private String description;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 }

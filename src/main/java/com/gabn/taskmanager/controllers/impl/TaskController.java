@@ -1,14 +1,14 @@
 package com.gabn.taskmanager.controllers.impl;
 
-import com.gabn.taskmanager.controllers.IUserController;
+import com.gabn.taskmanager.controllers.ITaskController;
 import com.gabn.taskmanager.dto.ResponseDTO;
-import com.gabn.taskmanager.dto.user.CreateUserDTO;
-import com.gabn.taskmanager.dto.user.UpdateUserDTO;
-import com.gabn.taskmanager.dto.user.UserCriteriaDTO;
-import com.gabn.taskmanager.dto.user.UserDTO;
-import com.gabn.taskmanager.mappers.UserMapper;
-import com.gabn.taskmanager.models.UserModel;
-import com.gabn.taskmanager.services.IUserService;
+import com.gabn.taskmanager.dto.task.CreateTaskDTO;
+import com.gabn.taskmanager.dto.task.TaskCriteriaDTO;
+import com.gabn.taskmanager.dto.task.TaskDTO;
+import com.gabn.taskmanager.dto.task.UpdateTaskDTO;
+import com.gabn.taskmanager.mappers.TaskMapper;
+import com.gabn.taskmanager.models.TaskModel;
+import com.gabn.taskmanager.services.ITaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,36 +22,36 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.gabn.taskmanager.mappers.UserMapper.mapCreateDTOToModel;
-import static com.gabn.taskmanager.mappers.UserMapper.mapCriteriaDTOToModel;
-import static com.gabn.taskmanager.mappers.UserMapper.mapModelToDTO;
-import static com.gabn.taskmanager.mappers.UserMapper.mapUpdateDTOToModel;
+import static com.gabn.taskmanager.mappers.TaskMapper.mapCreateDTOToModel;
+import static com.gabn.taskmanager.mappers.TaskMapper.mapCriteriaDTOToModel;
+import static com.gabn.taskmanager.mappers.TaskMapper.mapModelToDTO;
+import static com.gabn.taskmanager.mappers.TaskMapper.mapUpdateDTOToModel;
 import static com.gabn.taskmanager.utils.ResponseUtils.buildResponseDTO;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(
-    value = "/api/v1/users",
+    value = "/api/v1/tasks",
     produces = APPLICATION_JSON_VALUE
 )
-public class UserController implements IUserController {
-    private final IUserService userService;
+public class TaskController implements ITaskController {
+    private final ITaskService taskService;
 
-    public UserController(IUserService userService) {
-        this.userService = userService;
+    public TaskController(ITaskService taskService) {
+        this.taskService = taskService;
     }
 
     @Override
     @PostMapping(
         consumes = APPLICATION_JSON_VALUE
     )
-    public Mono<ResponseEntity<ResponseDTO<UserDTO>>> create(CreateUserDTO createUserDTO) {
-        return userService.create(mapCreateDTOToModel(createUserDTO))
-            .map((UserModel userModel) -> ResponseEntity.status(HttpStatus.CREATED)
+    public Mono<ResponseEntity<ResponseDTO<TaskDTO>>> create(CreateTaskDTO createTaskDTO) {
+        return taskService.create(mapCreateDTOToModel(createTaskDTO))
+            .map((TaskModel taskModel) -> ResponseEntity.status(HttpStatus.CREATED)
                 .body(
                     buildResponseDTO(
                         HttpStatus.CREATED,
-                        mapModelToDTO(userModel)
+                        mapModelToDTO(taskModel)
                     )
                 )
             );
@@ -59,16 +59,16 @@ public class UserController implements IUserController {
 
     @Override
     @GetMapping
-    public Mono<ResponseEntity<ResponseDTO<List<UserDTO>>>> findAll(
-        UserCriteriaDTO userCriteriaDTO
+    public Mono<ResponseEntity<ResponseDTO<List<TaskDTO>>>> findAll(
+        TaskCriteriaDTO taskCriteriaDTO
     ) {
-        return userService.findAll(mapCriteriaDTOToModel(userCriteriaDTO)).collectList()
-            .map((List<UserModel> userModelList) -> ResponseEntity.ok()
+        return taskService.findAll(mapCriteriaDTOToModel(taskCriteriaDTO)).collectList()
+            .map((List<TaskModel> taskModelList) -> ResponseEntity.ok()
                 .body(
                     buildResponseDTO(
                         HttpStatus.OK,
-                        userModelList.stream()
-                            .map(UserMapper::mapModelToDTO)
+                        taskModelList.stream()
+                            .map(TaskMapper::mapModelToDTO)
                             .collect(Collectors.toList())
                     )
                 )
@@ -79,15 +79,15 @@ public class UserController implements IUserController {
     @GetMapping(
         path = "/{id}"
     )
-    public Mono<ResponseEntity<ResponseDTO<UserDTO>>> findById(
+    public Mono<ResponseEntity<ResponseDTO<TaskDTO>>> findById(
         String id
     ) {
-        return userService.findById(id)
-            .map((UserModel userModel) -> ResponseEntity.ok()
+        return taskService.findById(id)
+            .map((TaskModel taskModel) -> ResponseEntity.ok()
                 .body(
                     buildResponseDTO(
                         HttpStatus.OK,
-                        mapModelToDTO(userModel)
+                        mapModelToDTO(taskModel)
                     )
                 )
             );
@@ -98,17 +98,17 @@ public class UserController implements IUserController {
         path = "/{id}",
         consumes = APPLICATION_JSON_VALUE
     )
-    public Mono<ResponseEntity<ResponseDTO<UserDTO>>> update(
+    public Mono<ResponseEntity<ResponseDTO<TaskDTO>>> update(
         String id,
-        UpdateUserDTO updateUserDTO
+        UpdateTaskDTO updateTaskDTO
     ) {
-        updateUserDTO.setId(id);
-        return userService.update(mapUpdateDTOToModel(updateUserDTO))
-            .map((UserModel userModel) -> ResponseEntity.ok()
+        updateTaskDTO.setId(id);
+        return taskService.update(mapUpdateDTOToModel(updateTaskDTO))
+            .map((TaskModel taskModel) -> ResponseEntity.ok()
                 .body(
                     buildResponseDTO(
                         HttpStatus.OK,
-                        mapModelToDTO(userModel)
+                        mapModelToDTO(taskModel)
                     )
                 )
             );
@@ -121,7 +121,7 @@ public class UserController implements IUserController {
     public Mono<ResponseEntity<ResponseDTO>> delete(
         String id
     ) {
-        return userService.delete(id)
+        return taskService.delete(id)
             .map(response -> ResponseEntity.ok()
                 .body(buildResponseDTO(HttpStatus.OK, null))
             );
